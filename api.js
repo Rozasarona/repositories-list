@@ -1,5 +1,6 @@
 const searchInput = document.getElementById("search");
-searchInput.addEventListener("change", function(e) {
+
+function searchInputChange(e) {
     const currentValue  = e.target.value;
 
     const url = `https://api.github.com/search/repositories?q=${currentValue}&per_page=5&page=1`;
@@ -78,5 +79,31 @@ searchInput.addEventListener("change", function(e) {
         autocomplete.classList.remove("hidden");
     });
 
-});
+}
+
+const debounce = (fn, debounceTime) => {
+    let isBlocked = false;
+    let timer;
+
+    function f() {
+        const callback = () => {
+            isBlocked = false;
+            fn.apply(this, arguments);
+        };
+
+        if (!isBlocked) {
+            isBlocked = true;
+            timer = setTimeout(callback, debounceTime);
+        } else {
+            clearTimeout(timer);
+            timer = setTimeout(callback, debounceTime);
+        }
+    }
+
+    return f;
+};
+
+searchInput.addEventListener("change", debounce(searchInputChange, 200));
+
+
 
