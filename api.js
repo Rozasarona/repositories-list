@@ -18,16 +18,16 @@ function searchInputChange(e) {
             alert("Не удалось обратиться к GitHub");
         }
     }).then (function(json) {
-        const array = json.items;
+        const repNames = json.items;
         const autocomplete = document.getElementById("autocomplete");
 
         while(autocomplete.firstChild) {
             autocomplete.removeChild(autocomplete.lastChild);
         }
 
-        for(let i = 0; i < array.length; i++) {
+        for(let i = 0; i < repNames.length; i++) {
             const div = document.createElement("div");
-            div.innerText = array[i].full_name;
+            div.innerText = repNames[i].full_name;
             div.classList.add("item");
             div.addEventListener("click", function() {
                 const replist = document.getElementById("replist");
@@ -46,17 +46,17 @@ function searchInputChange(e) {
 
                 let lineElement = document.createElement("div");
                 lineElement.classList.add("line");
-                lineElement.innerText = `Name: ${array[i].full_name}`;
+                lineElement.innerText = `Name: ${repNames[i].full_name}`;
                 leftElement.appendChild(lineElement);
 
                 lineElement = document.createElement("div");
                 lineElement.classList.add("line");
-                lineElement.innerText = `Owner: ${array[i].owner.login}`;
+                lineElement.innerText = `Owner: ${repNames[i].owner.login}`;
                 leftElement.appendChild(lineElement);
 
                 lineElement = document.createElement("div");
                 lineElement.classList.add("line");
-                lineElement.innerText = `Stars: ${array[i].stargazers_count}`;
+                lineElement.innerText = `Stars: ${repNames[i].stargazers_count}`;
                 leftElement.appendChild(lineElement);
 
                 const removeLink = document.createElement("a");
@@ -88,7 +88,7 @@ const debounce = (fn, debounceTime) => {
     let isBlocked = false;
     let timer;
 
-    function f() {
+    function debouncedFn() {
         const callback = () => {
             isBlocked = false;
             fn.apply(this, arguments);
@@ -103,10 +103,10 @@ const debounce = (fn, debounceTime) => {
         }
     }
 
-    return f;
+    return debouncedFn;
 };
 
-searchInput.addEventListener("change", debounce(searchInputChange, 200));
+searchInput.addEventListener("input", debounce(searchInputChange, 200));
 
 
 
