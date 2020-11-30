@@ -2,7 +2,10 @@ const searchInput = document.getElementById("search");
 
 function searchInputChange(e) {
     const currentValue  = e.target.value;
-
+    if(!currentValue || currentValue.length === 0) {
+        document.getElementById("autocomplete").classList.add("hidden");
+        return;
+    }
     const url = `https://api.github.com/search/repositories?q=${currentValue}&per_page=5&page=1`;
     fetch(url, {
         headers: {
