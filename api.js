@@ -11,13 +11,11 @@ function searchInputChange(e) {
         headers: {
             accept: "application/vnd.github.v3+json"
         }
-    }).then (function(response) {
-        if (response.ok) {
-            return response.json();
-        } else {
-            alert("Не удалось обратиться к GitHub");
-        }
-    }).then (function(json) {
+    }).then (response => response.json()
+
+    ).catch(err => alert(err.message + ':' + 'Не удалось обратиться к GitHub')
+
+    ).then (function(json) {
         const repNames = json.items;
         const autocomplete = document.getElementById("autocomplete");
 
